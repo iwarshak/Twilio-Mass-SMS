@@ -12,6 +12,17 @@ module Twilio
         @caller_id = caller_id.to_a
         @response_callbacks = []
       end
+      
+      def status(sid)
+        account = Twilio::RestAccount.new(@sid, @token)
+        resp = account.request("/2008-08-01/Accounts/#{@sid}/SMS/Messages/#{sid}", 'GET')
+        return Crack::XML.parse(resp.body)["TwilioResponse"]["SMSMessage"]
+      end
+      
+      def friendly_status(sid)
+        s = status(sid)
+        "status: #{s['Status']} from: #{s['From']}"
+      end
 
       def deliver(message, recipients = [], callback_status = nil)
         account = Twilio::RestAccount.new(@sid, @token)
