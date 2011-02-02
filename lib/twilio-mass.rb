@@ -53,7 +53,7 @@ module Twilio
               error_callback.call("Error in Twilio SMS. #{resp.body}") if @error_callback
             end
           rescue => ex
-            exception_callback.call(ex, "#{d}") if @exception_callback
+            exception_callback.call(ex, d) if @exception_callback
           end        
         end
       end
